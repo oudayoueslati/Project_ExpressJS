@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <h1>Chat Application</h1>
+    <div id="messages"></div>
+
+    <input id="x" type="text" placeholder="Tapez votre message ici">
+    <input onClick="send()" type="button" value="Envoyer">
+
+    <script>
+      const socket = io.connect();
+      socket.on("msg", (data) => {
+        const p = document.createElement("p");
+        p.innerText = data;
+        document.getElementById("messages").appendChild(p);
+      });
+
+      function send() {
+        const input = document.getElementById("x");
+        const message = input.value;
+        if (message.trim() !== "") {
+          socket.emit("msg", message); 
+          input.value = ""; 
+        }
+      }
+    </script>
+  </body>
+</html>
